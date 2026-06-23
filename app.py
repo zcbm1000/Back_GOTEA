@@ -11,7 +11,7 @@ app.register_blueprint(dashboard_bp)
 # 메인
 @app.route('/')
 def home():
-    return render_template('')
+    return render_template('/athta_home')
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')

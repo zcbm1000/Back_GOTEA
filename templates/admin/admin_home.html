@@ -1,0 +1,37 @@
+<!-- 관리자 권한 승인 html -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    {% include 'include/title.html' %}
+
+    <link href="{{ url_for('static', filename='css링크')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css링크')}}" rel="stylesheet">
+
+    <script src="{{ url_for('static', filename='js/admin/admin.js')}}"></script>
+</head>
+<body>
+
+    <!-- 중복코드 / header.nav  -->
+
+    {% if session['role'] == 'admin' %}
+
+    <article id="admin_wrap">
+
+        <div class="admin_home">
+            {% for mId in mData %}
+            <input class="" type="button" value="승인">
+            <input class="" type="button" value="거절">
+            <br>
+            {{ mId }} / {{ mData[mId]['mName'] }}
+            {% endfor %}
+        </div>
+
+    </article>
+    {% endif %}
+
+    <!-- 중복코드 footer  -->
+
+</body>
+</html>
