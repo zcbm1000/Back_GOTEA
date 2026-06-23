@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    {% include 'include/title.html' %}
+
+    <link href="{{ url_for('static', filename='css/common.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/member.css')}}" rel="stylesheet">
+
+    <script src="{{ url_for('static', filename='js/member.js')}}"></script>
+</head>
+<body>
+
+    <!-- 중복코드 / header.nav  -->
+
+    <article id="signup_wrap">
+
+        <div class="signup_form">
+            <form action="/member/signup_confirm" method="post" name="signup_form">
+                <input class="input_basic" type="text" name="mId" placeholder="아이디">
+                <br>
+                <input class="input_basic" type="password" name="mPw" placeholder="비밀번호">
+                <br>
+                <input class="input_basic" type="email" name="mMail" placeholder="이메일">
+                <br>
+                <input class="input_basic" type="text" name="mPhone" placeholder="전화번호">
+                <br>
+                <input class="input_button_basic_130" type="button" value="회원가입" onclick="signupForm();">
+                <input class="input_button_basic_130" type="reset" value="초기화">
+                
+            </form>
+        </div>
+
+    </article>
+
+    <!-- 중복코드 footer  -->
+
+</body>
+</html>
