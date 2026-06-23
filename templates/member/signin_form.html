@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link href="{{ url_for('static', filename='css링크')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css링크')}}" rel="stylesheet">
+
+    <script src="{{ url_for('static', filename='js/member.js')}}"></script>
+</head>
+<body>
+
+    <!-- 중복코드 / header.nav  -->
+
+    <article id="signin_wrap">
+
+
+        {% if result == 'fail' %}
+        <p class="signin_form_fail">
+            로그인 실패:아이디 또는 비밀번호 다시 확인해주세요.
+        </p>
+        {% endif %}
+
+        <div class="signin_form">
+            <form action="/member/signin_confirm" method="post" name="signin_form">
+                <input class="input_basic" type="text" name="mId" placeholder="아이디">
+                <br>
+                <input class="input_basic" type="password" name="mPw" placeholder="비밀번호">
+                <br>
+                <input class="input_button_basic_130" type="button" value="로그인" onclick="signinForm();">
+            </form>
+        </div>
+
+    </article>
+
+    <!-- 중복코드 footer  -->
+
+</body>
+</html>
