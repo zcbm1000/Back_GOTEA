@@ -1,0 +1,32 @@
+<!-- 회원정보 찾기 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    {% include 'include/title.html' %}
+
+    <link href="{{ url_for('static', filename='css/common.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/member.css')}}" rel="stylesheet">
+
+    <script src="{{ url_for('static', filename='js/member.js')}}"></script>
+</head>
+<body>
+
+    <!-- 중복코드 / header.nav  -->
+
+    <article id="find_account_wrap">
+
+        <div class="find_account_form">
+            <form action="/member/find_account_form" method="get" name="find_account">
+                <input class="" type="button" value="id찾기" onclick="링크">
+                <input class="" type="button" value="pw찾기" onclick="링크">                
+            </form>
+        </div>
+
+    </article>
+
+    <!-- 중복코드 footer  -->
+
+</body>
+</html>

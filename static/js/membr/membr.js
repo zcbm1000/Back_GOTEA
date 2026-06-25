@@ -55,3 +55,46 @@ function signinForm() {
         form.submit();
     }
 }
+
+// 회원정보찾기(ai)
+function sendOtp() {
+    const emailInput = document.querySelector('input[name="mMail"]').value;
+
+    if (!emailInput) {
+        alert("이메일을 먼저 입력해주세요!");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('mMail', emailInput);
+
+    fetch('/member/send_verification', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert(data.message);
+            
+            let timeLeft = 180;
+
+            const 
+            timerBox = document.querySelector('#timer');
+
+            setInterval(() => {
+            timerBox.innerText = timeLeft;
+            timeLeft = timeLeft - 1;
+            
+            
+        }, 1000);
+            
+        } else {
+            alert("발송 실패: " + data.message); 
+        }
+    })
+    .catch(error => {
+        console.error("에러 발생:", error);
+        alert("서버 통신 중 오류가 발생했습니다.");
+    });
+}

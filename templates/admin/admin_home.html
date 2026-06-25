@@ -13,7 +13,8 @@
 </head>
 <body>
 
-    <!-- 중복코드 / header.nav  -->
+    {% include 'include/header.html' %}
+    {% include 'include/nav.html' %}
 
     {% if session['role'] == 'admin' %}
 
@@ -23,6 +24,7 @@
             {% for mId in mData %}
             <input class="" type="button" value="승인">
             <input class="" type="button" value="거절">
+            <input class="" type="button" value="회원탈퇴">
             <br>
             {{ mId }} / {{ mData[mId]['mName'] }}
             {% endfor %}
@@ -31,7 +33,7 @@
     </article>
     {% endif %}
 
-    <!-- 중복코드 footer  -->
+    {% include 'include/footer.html' %}
 
 </body>
 </html>

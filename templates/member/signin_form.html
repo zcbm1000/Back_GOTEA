@@ -18,17 +18,23 @@
     <article id="signin_wrap">
 
 
-        {% if result == 'fail' %}
-        <p class="signin_form_fail">
-            로그인 실패:아이디 또는 비밀번호 다시 확인해주세요.
-        </p>
+        {% if result == 'LOGIN_FAILED' %}
+            <script>
+                alert('로그인 실패:아이디 또는 비밀번호 다시 확인해주세요.')
+            </script>
+        {% endif %}
+
+        {% if result == 'PENDING' %}
+            <script>
+                alert('미승인 계정입니다. 관리자에게 문의 해주세요.')
+            </script>
         {% endif %}
 
         <div class="signin_form">
             <form action="/member/signin_confirm" method="post" name="signin_form">
-                <input class="input_basic" type="text" name="mId" placeholder="아이디">
+                <input class="" type="text" name="mId" placeholder="아이디">
                 <br>
-                <input class="input_basic" type="password" name="mPw" placeholder="비밀번호">
+                <input class="" type="password" name="mPw" placeholder="비밀번호">
                 <br>
                 <input class="" type="button" value="로그인" onclick="signinForm();">
             </form>

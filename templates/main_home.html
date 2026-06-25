@@ -1,0 +1,68 @@
+<!-- 홈 화면 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% include 'include/title.html' %}
+
+    <link href="{{ url_for('static', filename='css/common.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/index.css')}}" rel="stylesheet">
+
+</head>
+<body>
+
+    {% include 'include/header.html' %}
+    {% include 'include/nav.html' %}
+    
+    <!-- 로그인 하지 않고 이용할시 -->
+    {% if result != 'ok' %}
+        <p>로그인 후 이용 부탁드립니다.</p>
+    
+    {% endif %}
+
+    
+    <article>
+        <div class="main_box">
+            
+            <h1>FIRE CONTROL SYSTEM</h1>
+            
+            <div class="btn_group">
+                
+                <a href="member/signin_form.html">
+                    
+                    <button>
+                        관제실 로그인
+                    </button>
+                    
+                </a>
+                
+                <a href="member/signup_form.html">
+                    
+                    <button>
+                        사용자 등록
+                    </button>
+                    
+                </a>
+                
+            </div>
+            
+        </div>
+    </article>
+    
+    <!-- 회원가입이후 alert창 띄우는 작업 -->
+    <script>
+        let signupResult = "{{ result }}";
+        
+        function checkSignupResult() {
+            if (signupResult === 'ok') {
+                alert('회원가입을 축하드립니다!! 관리자가 승인을 할때까지 기다려 주세요! ');
+            }
+        }
+        
+        checkSignupResult()
+        </script>
+        
+    {% include 'include/footer.html' %}
+
+</body>
+</html>
