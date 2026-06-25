@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template ,request, redirect, session
+from flask import Blueprint, render_template ,request, redirect, session, url_for
 from utils.json_manager import load_members, save_members
 from email.message import EmailMessage
 import random
@@ -43,8 +43,8 @@ def signup_confirm():
     }
 
     save_members(members)
-
-    return render_template('main_home.html', result='ok')
+    
+    return redirect('/?result=ok')
 
 # 회원가입 END
 
@@ -72,7 +72,7 @@ def signin_confirm():
         
     else:
         session['signinedMembrId'] = mId
-        return redirect ('/main_home')
+        return render_template('main_home.html')
     
 # 로그인 END
 

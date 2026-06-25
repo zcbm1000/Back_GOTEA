@@ -2,7 +2,7 @@ import json
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-MEMBERSFILE = os.path.join(BASE_DIR, 'db', 'members.json')
+MEMBERSFILE = os.path.join(BASE_DIR, 'db', 'member.json')
 DASHBOARDFILE = os.path.join(BASE_DIR, 'db', 'dashboard.json')
 
 def load_members():

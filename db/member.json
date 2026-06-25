@@ -1,0 +1,65 @@
+{
+    "admin01": {
+        "mId": "admin01",
+        "mName": "이고은",
+        "mPw": "securepassword123",
+        "mMail": "admin@example.com",
+        "mPhone": "010-1234-5678",
+        "role": "admin",
+        "isApproved": "True"
+    },
+    "xorud123": {
+        "mId": "xorud123",
+        "mName": "김태경",
+        "mPw": "1234",
+        "mMail": "xorud123@gmail.com",
+        "mPhone": "010-1234-1234",
+        "role": "user",
+        "isApproved": false
+    },
+    "rudtjs1245": {
+        "mId": "rudtjs1245",
+        "mName": "임경선",
+        "mPw": "1234",
+        "mMail": "rudtjs1245@gmail.com",
+        "mPhone": "010-7895-8552",
+        "role": "user",
+        "isApproved": false
+    },
+    "glidong": {
+        "mId": "glidong",
+        "mName": "홍길동",
+        "mPw": "1234",
+        "mMail": "igoeun126@gmail.com",
+        "mPhone": "010-1234-1234",
+        "role": "user",
+        "isApproved": false
+    },
+    "wjswhdgh456": {
+        "mId": "wjswhdgh456",
+        "mName": "전종호",
+        "mPw": "13574",
+        "mMail": "wjswhdgh456@gmail.com",
+        "mPhone": "010-4153-4752",
+        "role": "user",
+        "isApproved": false
+    },
+    "dntnrud456": {
+        "mId": "dntnrud456",
+        "mName": "우수경",
+        "mPw": "7894",
+        "mMail": "dntnrud456@gmail.com",
+        "mPhone": "010-4567-8526",
+        "role": "user",
+        "isApproved": false
+    },
+    "asdasd": {
+        "mId": "asdasd",
+        "mName": "응애애",
+        "mPw": "4567",
+        "mMail": "asdasd@gmail.com",
+        "mPhone": "010-5647-5899",
+        "role": "user",
+        "isApproved": false
+    }
+}
