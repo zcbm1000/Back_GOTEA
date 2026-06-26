@@ -78,7 +78,7 @@ def signin_confirm():
 def is_current_user_approved():
     member_id = session.get('signInedMemberId')
 
-    if member_id:
+    if not member_id:
         return False
     
     members = load_members()
@@ -238,15 +238,15 @@ def pw_find_confirm():
 @member_bp.route('/transaction_history_form')
 def transaction_history_form():
 
-    mData = load_members()
+    members = load_members()
 
-    mId = mData[userId]['mId']
+    mId = members[userId]['mId']
     userId = session.get('signInedMemberId')
 
-    mName = mData[userId]['mName']
-    mMail = mData[userId]['mMail']
-    role = mData[userId]['role']
-    isApproved = mData[userId]['isApproved']
+    mName = members[userId]['mName']
+    mMail = members[userId]['mMail']
+    role = members[userId]['role']
+    isApproved = members[userId]['isApproved']
 
     if userId is None:
         return redirect ('/')

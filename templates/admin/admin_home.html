@@ -20,18 +20,25 @@
 
     <article id="admin_wrap">
 
-        <div class="admin_home">
-            {% for mId in mData %}
+        <div class="pending">
+            {% for mId in members %}
+            {% if members[mId]['isApproved'] == False %}
             <input class="" type="button" value="승인">
-            <input class="" type="button" value="거절">
-            <input class="" type="button" value="회원탈퇴">
+            <input class="" type="button" value="미승인">
             <br>
-            {{ mId }} / {{ mData[mId]['mName'] }}
+            {{ mId }} / {{ members[mId]['mName'] }}
+            {% endif %}
             {% endfor %}
+        </div>
+        <div class="employee_list">
+            <select class="">
+                <option>관리자</option>
+                <option>직원</option>
+            </select>
+            <input class="" type="button" value="회원탈퇴">
         </div>
 
     </article>
-    {% endif %}
 
     {% include 'include/footer.html' %}
 
