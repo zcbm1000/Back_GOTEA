@@ -1,14 +1,19 @@
+// 메인으로
+function goHome() {
+    location.href = '/';
+}
+
 // 회원가입 js
 function signupForm() {
     console.log('signupForm() CALLED!');
 
     let form = document.signup_form;
 
-    let mId = form.mId.value.trim();
-    let mName = form.mName.value.trim();
-    let mPw = form.mPw.value.trim();
-    let mMail = form.mMail.value.trim();
-    let mPhone = form.mPhone.value.trim();
+    const mId = form.mId.value.trim();
+    const mName = form.mName.value.trim();
+    const mPw = form.mPw.value.trim();
+    const mMail = form.mMail.value.trim();
+    const mPhone = form.mPhone.value.trim();
     
     if (mId === '') {
         alert('아이디를 입력 하세요.');
@@ -41,8 +46,8 @@ function signinForm() {
 
     let form = document.signin_form;
 
-    let mId = form.mId.value.trim();
-    let mPw = form.mPw.value.trim();
+    const mId = form.mId.value.trim();
+    const mPw = form.mPw.value.trim();
 
     if (mId === '') {
         alert('아이디를 입력 하세요.');
@@ -57,16 +62,39 @@ function signinForm() {
 }
 
 // 회원정보찾기(ai)
-function sendOtp() {
-    const emailInput = document.querySelector('input[name="mMail"]').value;
+let otpTimer = null;
+let timeLeft = 0; 
+let isOtpVerified = false;
 
-    if (!emailInput) {
-        alert("이메일을 먼저 입력해주세요!");
-        return;
+function getInputs() {
+    return {
+        idInput: document.querySelector('input[name="mId"]'),
+        nameInput: document.querySelector('input[name="mName"]'),
+        emailInput: document.querySelector('input[name="mMail"]'),
+        otpInput: document.querySelector('input[name="otp"]')
+    };
+}
+
+function sendOtp() {
+    const { idInput, nameInput, emailInput } = getInputs();
+
+    const nameValue = nameInput ? nameInput.value.trim() : "";
+    const emailValue = emailInput ? emailInput.value.trim() : "";
+
+    if (idInput) {
+        const idValue = idInput.value.trim();
+        if (!idValue) { alert("아이디를 입력해주세요!"); idInput.focus(); return; }
     }
+    
+    if (!nameValue) { alert("성함을 입력해주세요!"); nameInput?.focus(); return; }
+    if (!emailValue) { alert("이메일을 입력해주세요!"); emailInput?.focus(); return; }
 
     const formData = new FormData();
-    formData.append('mMail', emailInput);
+    if (idInput) {
+        formData.append('mId', idInput.value.trim());
+    }
+    formData.append('mName', nameValue);
+    formData.append('mMail', emailValue);
 
     fetch('/member/send_verification', {
         method: 'POST',
@@ -75,26 +103,125 @@ function sendOtp() {
     .then(response => response.json())
     .then(data => {
         if (data.status === "success") {
-            alert(data.message);
+            alert(data.message || "인증번호가 발송되었습니다.");
             
-            let timeLeft = 180;
+            if (otpTimer) clearInterval(otpTimer);
 
-            const 
-            timerBox = document.querySelector('#timer');
-
-            setInterval(() => {
-            timerBox.innerText = timeLeft;
-            timeLeft = timeLeft - 1;
+            timeLeft = 180;
+            const timerBox = document.querySelector('#timer');
+            updateTimerDisplay(timerBox, timeLeft);
             
-            
-        }, 1000);
+            otpTimer = setInterval(() => {
+                timeLeft -= 1;
+                if (timeLeft >= 0) {
+                    updateTimerDisplay(timerBox, timeLeft);
+                } else {
+                    clearInterval(otpTimer);
+                    if (timerBox) timerBox.innerText = "시간 만료";
+                    alert("인증 시간이 만료되었습니다. 다시 시도해주세요.");
+                }
+            }, 1000);
             
         } else {
-            alert("발송 실패: " + data.message); 
+            alert("발송 실패: " + (data.message || "오류가 발생했습니다.")); 
         }
     })
     .catch(error => {
         console.error("에러 발생:", error);
         alert("서버 통신 중 오류가 발생했습니다.");
     });
+}
+
+function checkOtp() { 
+    const { idInput, nameInput, emailInput, otpInput } = getInputs();
+
+    const otp = otpInput ? otpInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+
+    if (!otp) { alert("인증번호를 입력해주세요!"); otpInput?.focus(); return; }
+    if (timeLeft <= 0) { alert("인증 시간이 만료되었습니다. 다시 발송해주세요."); return; }
+
+    const formData = new FormData();
+    formData.append('otp', otp);
+    formData.append('mMail', email);
+
+    fetch('/member/verify_otp', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert("인증에 성공했습니다!");
+            isOtpVerified = true;
+            
+            if (otpTimer) clearInterval(otpTimer);
+            
+            const timerBox = document.querySelector('#timer');
+            if (timerBox) timerBox.innerText = "인증 완료";
+            
+            if (idInput) idInput.readOnly = true;
+            if (nameInput) nameInput.readOnly = true;
+            if (emailInput) emailInput.readOnly = true;
+            if (otpInput) otpInput.readOnly = true;
+            
+        } else { 
+            alert("인증 실패: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error("에러 발생:", error);
+        alert("서버 통신 중 오류가 발생했습니다.");
+    });
+}
+
+// 아이디 찾기 완료 함수
+function goFindId() {
+    if (!isOtpVerified) {
+        alert("이메일 인증을 먼저 완료해주세요.");
+        return;
+    }
+    const form = document.querySelector('form[name="id_find_form"]');
+    if (form) form.submit();
+}
+
+// 비밀번호 찾기 완료 함수
+function goFindPw() {
+    if (!isOtpVerified) {
+        alert("이메일 인증을 먼저 완료해주세요.");
+        return;
+    }
+    const form = document.querySelector('form[name="pw_find_form"]');
+    if (form) form.submit();
+}
+
+function updateTimerDisplay(element, totalSeconds) {
+    if (!element) return;
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    element.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+// 회원정보수정
+function modifyForm() {
+
+    const form = document.modify_form;
+
+    const mPw = form.mPw.value.trim();
+    const mMail = form.mMail.value.trim();
+    const mPhone = form.mPhone.value.trim();
+
+    if (mPw === '') {
+        alert('비밀번호를 입력 하세요.');
+        form.mPw.focus();
+
+    } else if (mMail === '') {
+        alert('이메일을 입력 하세요.');
+        form.mMail.focus();
+
+    } else if (mPhone === '') {
+        alert('전화번호를 입력 하세요.');
+        form.mPhone.focus();
+    } else {
+        form.submit();
+    }
 }

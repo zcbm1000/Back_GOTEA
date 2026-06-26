@@ -15,7 +15,7 @@
 
     {% include 'include/header.html' %}
     {% include 'include/nav.html' %}
-
+ 
     <article id="modify_wrap">
 
         <div class="modify_form">
@@ -31,8 +31,8 @@
                 <input class="" type="text" name="mPhone" value="{{ member.mPhone }}" placeholder="전화번호">
                 <br>
                 <input class="" type="button" value="정보수정" onclick="modifyForm();">
+                <input class="" type="button" value="메인으로" onclick="goHome()">
                 <input class="" type="reset" value="초기화">
-                
             </form>
         </div>
 

@@ -13,20 +13,21 @@
 </head>
 <body>
 
-    <!-- 중복코드 / header.nav  -->
+    {% include 'include/header.html' %}
+    {% include 'include/nav.html' %}
 
     <article id="find_account_wrap">
 
         <div class="find_account_form">
             <form action="/member/find_account_form" method="get" name="find_account">
-                <input class="" type="button" value="id찾기" onclick="링크">
-                <input class="" type="button" value="pw찾기" onclick="링크">                
+                <input class="" type="button" value="id찾기" onclick="location.href='/member/id_find_form'">
+                <input class="" type="button" value="pw찾기" onclick="location.href='/member/pw_find_form'">                
             </form>
         </div>
 
     </article>
 
-    <!-- 중복코드 footer  -->
+    {% include 'include/footer.html' %}
 
 </body>
 </html>

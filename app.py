@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from blueprints.member.routes import member_bp
 from blueprints.dashboard.routes import dashboard_bp
+from blueprints.member.routes import is_current_user_approved
 
 app = Flask(__name__)
 
@@ -11,8 +12,9 @@ app.secret_key = 'your_very_secret_and_unique_string_here'
 # 메인
 @app.route('/')
 def main_home():
+    is_approved = is_current_user_approved()
     result = request.args.get('result')
-    return render_template('main_home.html', result=result)
+    return render_template('main_home.html', result=result, is_approved = is_approved)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
