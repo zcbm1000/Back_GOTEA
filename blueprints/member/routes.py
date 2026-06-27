@@ -257,3 +257,14 @@ def transaction_history_form():
             mName=mName,
             mMail = mMail,
             isApproved = isApproved)
+
+@member_bp.route('/delete_member', methods=['POST'])
+def delete_member():
+    members = load_members()
+    user_id = request.form.get('mId')
+
+    if user_id in members:
+        del members[user_id]
+        save_members(members)
+        session.clear()
+        return jsonify({"result": "success"})

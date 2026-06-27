@@ -4,17 +4,8 @@
     <h2>FIRE CONTROL</h2>
 
     <div>
-        관제실
-        실시간
-        리스트
-        공지사항
         {% if session.get('signinedMembrId') and members[session.get('signinedMembrId')]['isApproved'] == True%}
         <!-- 어드민이 보이는 화면 -->
-         관제실
-         실시간
-         리스트
-         공지사항
-         권한
          {% endif %}
     </div>
 </nav>

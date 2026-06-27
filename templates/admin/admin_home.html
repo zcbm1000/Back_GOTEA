@@ -1,4 +1,4 @@
-<!-- 관리자 권한 승인 html -->
+<!-- 관리자 권한 승인 -->
  <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,11 +31,16 @@
             {% endfor %}
         </div>
         <div class="employee_list">
+            {% for mId in members %}
+            {% if members[mId]['isApproved'] == True %}
             <select class="">
                 <option>관리자</option>
                 <option>직원</option>
             </select>
-            <input class="" type="button" value="회원탈퇴">
+            <input class="" type="button" value="회원삭제" onclick="deleteMember('{{ mId }}')">
+            {{ mId }} / {{ members[mId]['mName'] }}
+            {% endif %}
+            {% endfor %}
         </div>
 
     </article>
