@@ -13,41 +13,11 @@
 
     {% include 'include/header.html' %}
     {% include 'include/nav.html' %}
-    
-    <!-- 로그인 하지 않고 이용할시 -->
-    {% if result != 'ok' %}
-        <p>로그인 후 이용 부탁드립니다.</p>
 
-    {% endif %}
-
-    
     <article>
         <div class="main-box">
             
             <h1>FIRE CONTROL SYSTEM</h1>
-            
-            {% if not session.get('signinedMembrId') %}
-            <div class="btn-group">
-
-                <a href="/member/signin_form">
-
-                    <button>
-                        관제실 로그인
-                    </button>
-
-                </a>
-
-                <a href="/member/signup_form">
-
-                    <button>
-                        사용자 등록
-                    </button>
-
-                </a>
-                
-            </div>
-            {% endif %}
-
         </div>
     </article>
     

@@ -60,6 +60,7 @@ def signin_confirm():
     mId = request.form['mId']
     mPw = request.form['mPw']
 
+    isCurrent = is_current_user_approved()
     members = load_members()
 
     if mId not in members:
@@ -72,8 +73,8 @@ def signin_confirm():
         return redirect ('/member/signin_form?result=PENDING')
         
     else:
-        session['signinedMembrId'] = mId
-        return render_template('main_home.html', is_current_user_approved())
+        session['signInedMemberId'] = mId
+        return render_template('main_home.html', members=members,isCurrent=isCurrent)
     
 def is_current_user_approved():
     member_id = session.get('signInedMemberId')
@@ -94,14 +95,14 @@ def is_current_user_approved():
 @member_bp.route('/modify_form')
 def modify_form():
     members = load_members()
-    member = members[session.get('signinedMembrId')]
+    member = members[session.get('signInedMemberId')]
     return render_template('modify_form.html', member = member)
 
 @member_bp.route('/modify_confirm', methods=['POST'])
 def modify_confirm():
 
     members = load_members()
-    mId = session.get('signinedMembrId')
+    mId = session.get('signInedMemberId')
 
     if mId in members:
         
@@ -123,15 +124,27 @@ def modify_confirm():
 # 회원정보 수정 END
 
 # 회원정보 찾기 STAER
-@member_bp.route('/find_account_form')
-def find_account_form():
+@member_bp.route('/id_find_form')
+def id_find_form():
     session.pop('is_email_verified', None)
     session.pop('verified_email', None)
     session.pop('otp', None)
     session.pop('otp_email', None)
     session.pop('otp_time', None)
+    
+    return render_template('member/id_find_form.html')
 
-    return render_template('find_account_form.html')
+
+@member_bp.route('/pw_find_form')
+def pw_find_form():
+    session.pop('is_email_verified', None)
+    session.pop('verified_email', None)
+    session.pop('otp', None)
+    session.pop('otp_email', None)
+    session.pop('otp_time', None)
+    
+    return render_template('member/pw_find_form.html')
+
 
 @member_bp.route('/send_verification', methods=['POST'])
 def send_verification():
@@ -140,7 +153,6 @@ def send_verification():
     if not email_to:
         return jsonify({"status": "error", "message": "이메일 주소가 없습니다."})
 
-    # 기존 인증 정보 초기화
     session.pop('otp', None)
     session.pop('otp_email', None)
     session.pop('otp_time', None)
@@ -153,7 +165,6 @@ def send_verification():
     session['otp_email'] = email_to
     session['otp_time'] = datetime.now().timestamp()
 
-
     otpMail = EmailMessage()
     otpMail['Subject'] = "이메일 인증 번호 안내"
     otpMail['To'] = email_to
@@ -163,12 +174,11 @@ def send_verification():
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
             server.login('igoeun126@gmail.com', 'wbyl yhub iatk frsr')
             server.send_message(otpMail)
-
         return jsonify({"status": "success", "message": "인증번호가 발송되었습니다."})
-
     except Exception as e:
         print("메일 발송 에러 :", e)
         return jsonify({"status": "error", "message": "메일 발송에 실패했습니다."})
+
 
 @member_bp.route('/verify_otp', methods=['POST'])
 def verify_otp():
@@ -191,10 +201,10 @@ def verify_otp():
         session.pop('otp', None)
         session.pop('otp_email', None)
         session.pop('otp_time', None)
-
         return jsonify({"status": "success", "message": "인증에 성공했습니다."})
 
     return jsonify({"status": "error", "message": "인증번호가 일치하지 않습니다."})
+
 
 @member_bp.route('/id_find_confirm', methods=['POST'])
 def id_find_confirm():
@@ -213,6 +223,7 @@ def id_find_confirm():
         return render_template('id_find_result.html', found_id=found_id)
 
     return "<script>alert('일치하는 회원 정보가 없습니다.'); history.back();</script>"
+
 
 @member_bp.route('/pw_find_confirm', methods=['POST'])
 def pw_find_confirm():
@@ -238,25 +249,33 @@ def pw_find_confirm():
 @member_bp.route('/transaction_history_form')
 def transaction_history_form():
 
-    members = load_members()
-
-    mId = members[userId]['mId']
     userId = session.get('signInedMemberId')
 
+    if userId is None:
+        return redirect ('/')
+
+    members = load_members()
+
+    if userId not in members:
+        return redirect ('/')
+
+    mId = members[userId]['mId']
     mName = members[userId]['mName']
     mMail = members[userId]['mMail']
     role = members[userId]['role']
     isApproved = members[userId]['isApproved']
 
-    if userId is None:
+    if role  != 'admin':
         return redirect ('/')
-    elif role == 'admin':
-        return render_template(
-            'admin_home.html', 
-            mId=mId, 
-            mName=mName,
-            mMail = mMail,
-            isApproved = isApproved)
+    
+    return render_template(
+        'admin_home.html', 
+        members=members,
+        role=role,
+        mId=mId, 
+        mName=mName,
+        mMail = mMail,
+        isApproved = isApproved)
 
 @member_bp.route('/delete_member', methods=['POST'])
 def delete_member():

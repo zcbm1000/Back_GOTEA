@@ -9,7 +9,7 @@
     <link href="{{ url_for('static', filename='css/common.css')}}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/member.css')}}" rel="stylesheet">
 
-    <script src="{{ url_for('static', filename='js/member.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/member/member.js')}}"></script>
 </head>
 <body>
 
@@ -30,8 +30,8 @@
                 <input type="button" placeholder="인증번호 인증" onclick="checkOtp();">
                 <br>
                 <input class="" type="button" value="아이디 찾기" onclick="goFindId()">
-                <input class="" type="button" value="메인으로" onclick="goHome()">
             </form>
+                <a href="/"><button>메인으로</button></a>
         </div>
 
     </article>

@@ -21,6 +21,7 @@
     <article id="admin_wrap">
 
         <div class="pending">
+            <form action="/member/transaction_history_form" method="post" name="admin_home">
             {% for mId in members %}
             {% if members[mId]['isApproved'] == False %}
             <input class="" type="button" value="승인">
@@ -41,6 +42,7 @@
             {{ mId }} / {{ members[mId]['mName'] }}
             {% endif %}
             {% endfor %}
+            </form>
         </div>
 
     </article>

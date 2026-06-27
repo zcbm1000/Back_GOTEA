@@ -4,7 +4,17 @@
     <h2>FIRE CONTROL</h2>
 
     <div>
-        {% if session.get('signinedMembrId') and members[session.get('signinedMembrId')]['isApproved'] == True%}
+        {% if not session.get('signInedMemberId') %}
+        <a href="/member/signup_form">회원가입</a>
+        <a href="/member/signin_form">로그인</a>
+        
+        {% elif session.get['role'] == 'admin' %}
+        <a href="/member/modify_form">회원정보수정</a>
+        <a href="/admin/admin_home">대원목록</a>
+
+        {% elif session.get('signInedMemberId')%}
+        <a href="/member/modify_form">회원정보수정</a>
+
         <!-- 어드민이 보이는 화면 -->
          {% endif %}
     </div>

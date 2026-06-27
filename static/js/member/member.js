@@ -1,8 +1,3 @@
-// 메인으로
-function goHome() {
-    location.href = '/';
-}
-
 // 회원가입 js
 function signupForm() {
     console.log('signupForm() CALLED!');
